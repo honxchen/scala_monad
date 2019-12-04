@@ -1,7 +1,5 @@
 package com.xing.monad.version2
 
-import com.xing.monad.version1.cal
-
 object cal2 {
   def sqrt(v:Double):Data =
     if (v <0)
@@ -26,11 +24,23 @@ object cal2 {
     val x4 = 1
 
     //todo implement sub(sqrt(sum(div(x1,x2),x3)),x4)
+    val divResult: Data = div(x1, x2)
+    val result: Data = divResult match {
+      case Normal(v) =>
+        val sumResult = sum(v, x3)
+        val sqrtResult = sqrt(sumResult)
+        sqrtResult match {
+          case Normal(v1) => Normal(sub(v1, x4))
+          case InvalidInput(e1) => InvalidInput(e1)
+        }
+      case InvalidInput(e) => InvalidInput(e)
+    }
 
+    println(result)
   }
 
   def main(args: Array[String]): Unit = {
-    cal.calculation
+    cal2.calculation
 
     Option
   }
